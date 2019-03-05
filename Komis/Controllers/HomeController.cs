@@ -1,4 +1,6 @@
-﻿using Komis.Models;
+﻿using System.Linq;
+using Komis.Models;
+using Komis.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,7 +21,15 @@ namespace Komis.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            var samochody = _samochodRepository.PobierzWszystkieSamochody().OrderBy(s => s.Marka);
+
+            var homeVM = new HomeVM()
+            {
+                Title = "Przeglad Samochodów",
+                Samochody = samochody.ToList()
+            };
+
+            return View(homeVM);
         }
     }
 }
